@@ -5,3 +5,4 @@ LED-Controller/.settings/org.eclipse.jdt.core.prefs
 .project
 .settings/org.eclipse.jdt.core.prefs
 bin/.gitignore
+/target/
