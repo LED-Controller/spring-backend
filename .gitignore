@@ -1,3 +1,7 @@
 LED-Controller/.classpath
 LED-Controller/.project
 LED-Controller/.settings/org.eclipse.jdt.core.prefs
+.classpath
+.project
+.settings/org.eclipse.jdt.core.prefs
+bin/.gitignore
