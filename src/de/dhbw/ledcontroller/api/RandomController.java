@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.dhbw.ledcontroller.connection.LightStripConnection;
 
 @RestController
-public class TestController {
+public class RandomController {
 
 	@RequestMapping("/random")
 	public ResponseEntity<?> home() {
