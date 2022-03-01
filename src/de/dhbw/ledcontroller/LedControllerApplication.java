@@ -1,4 +1,4 @@
-package main.java.de.dhbw.ledcontroller;
+package de.dhbw.ledcontroller;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

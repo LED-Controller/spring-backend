@@ -1,4 +1,4 @@
-package main.java.de.dhbw.ledcontroller.util;
+package de.dhbw.ledcontroller.util;
 
 public class Logger {
 
@@ -14,7 +14,7 @@ public class Logger {
 	}
 
 	public void log(String msg) {
-		System.out.println(componentName + ": " + msg);
+		System.out.println("[" + componentName + "] " + msg);
 	}
 
 }

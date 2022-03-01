@@ -1,4 +1,4 @@
-package main.java.de.dhbw.ledcontroller;
+package de.dhbw.ledcontroller.api;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
