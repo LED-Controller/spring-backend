@@ -17,7 +17,7 @@ public class LightStripConnection {
 	private DataOutputStream out;
 	private BufferedReader in;
 
-	private String id;
+	private String mac;
 
 	public LightStripConnection(Socket socketConnection) {
 		try {
@@ -56,16 +56,16 @@ public class LightStripConnection {
 	private void handleData(String data) {
 		if (data.startsWith("REGISTER ")) {
 			String[] split = data.split(" ");
-			id = split[1];
+			mac = split[1];
 			add();
 		}
 
-		System.out.println("FROM " + id + " | " + data);
+		System.out.println("FROM " + mac + " | " + data);
 		sendToStrip("ok");
 	}
 
 	public void sendToStrip(String data) {
-		System.out.println("TO   " + id + " | " + data);
+		System.out.println("TO   " + mac + " | " + data);
 		data = data + "\n";
 		try {
 			out.writeBytes(data);
@@ -88,8 +88,8 @@ public class LightStripConnection {
 		sendToStrip("ping");
 	}
 
-	public String getId() {
-		return id;
+	public String getMac() {
+		return mac;
 	}
 
 }
