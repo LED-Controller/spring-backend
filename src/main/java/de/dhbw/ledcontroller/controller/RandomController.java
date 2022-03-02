@@ -13,6 +13,13 @@ import de.dhbw.ledcontroller.connection.LightStripConnection;
 @RestController
 public class RandomController {
 
+	// TODO
+	// Sollte soweit funktionieren, allerdings wird derzeit nichts mit einem Lamp-Objekt gemacht.
+	// Das Lamp-Objekt muss anhand der MAC aus der Datenbank geladen werden.
+	// Anschließend mit den Zufallswerten überschrieben werden.
+	// Dann die Daten an den Controller übertragen (über globale Methode, welche einfach das Lamp Objekt bekommt?)
+	// Zuletzt das neue Lamp Objekt zurück in die Datenbank (auch über die (selbe) globale Methode?
+	
 	@PostMapping("/random")
 	public ResponseEntity<?> random(@RequestParam String mac) {
 		int r = rand(30, 255);
@@ -20,7 +27,6 @@ public class RandomController {
 		int b = rand(30, 255);
 
 		String cmd = CommandGenerator.colorRGB(r, g, b);
-
 		boolean success = send(mac, cmd);
 		if (success) {
 			return ResponseEntity.ok().build();
