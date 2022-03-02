@@ -5,6 +5,9 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.jupiter.api.Test;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class CommandGenerator {
 
 	private static final String OFF = "OFF";
@@ -44,10 +47,9 @@ public class CommandGenerator {
 
 	@Test
 	void test() {
-		CommandGenerator target = new CommandGenerator();
-		assertThat(target.colorRGB(1, 2, 3), is("F1 1 2 3"));
-		assertThat(target.colorRGBW(1, 2, 3, 4), is("F2 1 2 3 4"));
-		assertThat(target.colorNeoRGB(1, 2, 3), is("X1 1 2 3"));
+		assertThat(CommandGenerator.colorRGB(1, 2, 3), is("F1 1 2 3"));
+		assertThat(CommandGenerator.colorRGBW(1, 2, 3, 4), is("F2 1 2 3 4"));
+		assertThat(CommandGenerator.colorNeoRGB(1, 2, 3), is("X1 1 2 3"));
 	}
 
 }

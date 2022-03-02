@@ -13,15 +13,13 @@ import de.dhbw.ledcontroller.connection.LightStripConnection;
 @RestController
 public class RandomController {
 
-	private CommandGenerator commandGenerator = new CommandGenerator();
-
 	@PostMapping("/random")
 	public ResponseEntity<?> random(@RequestParam String mac) {
 		int r = rand(30, 255);
 		int g = rand(30, 255);
 		int b = rand(30, 255);
 
-		String cmd = commandGenerator.colorRGB(r, g, b);
+		String cmd = CommandGenerator.colorRGB(r, g, b);
 
 		boolean success = send(mac, cmd);
 		if (success) {
