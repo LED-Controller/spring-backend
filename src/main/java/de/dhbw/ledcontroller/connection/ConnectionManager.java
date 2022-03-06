@@ -29,10 +29,9 @@ public class ConnectionManager {
 		socketThread = new Thread(() -> {
 			try {
 				try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-					logger.log("Listening for connections...");
 					while (true) {
 						Socket socket = serverSocket.accept();
-						logger.log(socket.getInetAddress().getHostAddress() + " connected");
+						logger.log("IP " + socket.getInetAddress().getHostAddress() + " hat sich verbunden.");
 						LightStripConnection stripConnection = new LightStripConnection(socket);
 						stripConnection.startThread();
 					}
@@ -53,7 +52,7 @@ public class ConnectionManager {
 					e.printStackTrace();
 				}
 
-				logger.log("Send ping an " + LightStripConnection.connectionList.size() + " strips.");
+				logger.log("Es sind aktuell " + LightStripConnection.connectionList.size() + " Streifen verbunden.");
 
 				for (LightStripConnection connection : LightStripConnection.connectionList) {
 					connection.sendPing();
