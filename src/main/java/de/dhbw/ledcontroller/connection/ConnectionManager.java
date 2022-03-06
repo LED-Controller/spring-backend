@@ -18,24 +18,30 @@ public class ConnectionManager {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void startConnectionManager() {
+		startSocketThread();
 		startPingThread();
-		try {
-			try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-				logger.log("Listening for connections...");
-				while (true) {
-					Socket socket = serverSocket.accept();
-					logger.log(socket.getInetAddress().getHostAddress() + " connected");
-					LightStripConnection stripConnection = new LightStripConnection(socket);
-					stripConnection.startThread();
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private Thread pingThread;
+	private Thread socketThread;
+
+	private void startSocketThread() {
+		socketThread = new Thread(() -> {
+			try {
+				try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+					while (true) {
+						Socket socket = serverSocket.accept();
+						logger.log("IP " + socket.getInetAddress().getHostAddress() + " hat sich verbunden.");
+						LightStripConnection stripConnection = new LightStripConnection(socket);
+						stripConnection.startThread();
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+		socketThread.start();
+	}
 
 	private void startPingThread() {
 		pingThread = new Thread(() -> {
@@ -46,7 +52,7 @@ public class ConnectionManager {
 					e.printStackTrace();
 				}
 
-				logger.log("Send ping an " + LightStripConnection.connectionList.size() + " strips.");
+				logger.log("Es sind aktuell " + LightStripConnection.connectionList.size() + " Streifen verbunden.");
 
 				for (LightStripConnection connection : LightStripConnection.connectionList) {
 					connection.sendPing();

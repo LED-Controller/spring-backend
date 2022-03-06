@@ -61,12 +61,11 @@ public class LightStripConnection {
 		}
 
 		System.out.println("FROM " + mac + " | " + data);
-		sendToStrip("ok");
 	}
 
 	public void sendToStrip(String data) {
 		System.out.println("TO   " + mac + " | " + data);
-		data = data + "\n";
+		data = data + '\n';
 		try {
 			out.writeBytes(data);
 			out.flush();
