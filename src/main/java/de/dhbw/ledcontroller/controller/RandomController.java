@@ -14,14 +14,6 @@ import de.dhbw.ledcontroller.connection.LightStripConnection;
 @RestController
 public class RandomController {
 
-	@RequestMapping("/random")
-	public ResponseEntity<?> home() {
-		for (LightStripConnection connection : LightStripConnection.connectionList) {
-			connection.sendToStrip("random");
-		}
-		return ResponseEntity.ok().build();
-	}
-	
 	// TODO
 	// Sollte soweit funktionieren, allerdings wird derzeit nichts mit einem Lamp-Objekt gemacht.
 	// Das Lamp-Objekt muss anhand der MAC aus der Datenbank geladen werden.
