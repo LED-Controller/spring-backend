@@ -2,12 +2,15 @@ package de.dhbw.ledcontroller.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class LedColor {
+	public LedColor(int r, int g, int b) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+	}
 
 	int r = -1;
 	int g = -1;
