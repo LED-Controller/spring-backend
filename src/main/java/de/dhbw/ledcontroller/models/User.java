@@ -24,12 +24,12 @@ public class User {
 	private Integer id;
 
 	@NonNull
-	@Column(nullable = false, columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT")
 	private String name;
 
 	@NonNull
 	@JsonIgnore
-	@Column(nullable = false, columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT")
 	private String pass;
 
 }
