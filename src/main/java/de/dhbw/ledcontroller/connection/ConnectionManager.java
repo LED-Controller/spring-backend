@@ -18,24 +18,31 @@ public class ConnectionManager {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void startConnectionManager() {
+		startSocketThread();
 		startPingThread();
-		try {
-			try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-				logger.log("Listening for connections...");
-				while (true) {
-					Socket socket = serverSocket.accept();
-					logger.log(socket.getInetAddress().getHostAddress() + " connected");
-					LightStripConnection stripConnection = new LightStripConnection(socket);
-					stripConnection.startThread();
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private Thread pingThread;
+	private Thread socketThread;
+
+	private void startSocketThread() {
+		socketThread = new Thread(() -> {
+			try {
+				try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+					logger.log("Listening for connections...");
+					while (true) {
+						Socket socket = serverSocket.accept();
+						logger.log(socket.getInetAddress().getHostAddress() + " connected");
+						LightStripConnection stripConnection = new LightStripConnection(socket);
+						stripConnection.startThread();
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+		socketThread.start();
+	}
 
 	private void startPingThread() {
 		pingThread = new Thread(() -> {
