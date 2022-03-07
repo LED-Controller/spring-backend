@@ -16,10 +16,18 @@ public class ConnectionManager {
 	private static final int PORT = 18533;
 	private static Logger logger = new Logger();
 
+	private static boolean alreadyRunning = false;
+	
 	@EventListener(ApplicationReadyEvent.class)
 	public void startConnectionManager() {
-		startSocketThread();
-		startPingThread();
+		if(alreadyRunning) {
+			logger.log("Server wurde NICHT erneut gestartet.");
+		} else {
+			alreadyRunning = true;
+			startSocketThread();
+			startPingThread();
+			logger.log("Server wurde gestartet.");
+		}
 	}
 
 	private Thread pingThread;
