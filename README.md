@@ -1,11 +1,5 @@
 # Spring Backend: LED-Controller
 
 ## Schnittstelle
-
-|Pfad|Ergebnis|
-|--|--|
-|GET /controllers|Liste aller LED-Controller|
-|PUT /controllers/{id}|Controller hinzufügen|
-|DELETE /controllers/{id}|Controller löschen|
-|POST /controllers/{id}|Controller ansteuern|
+https://docs.google.com/document/d/1ry-mmetxr4y1po66lcjljmldgmf8ojthicdp2amq_9w/edit#
 
