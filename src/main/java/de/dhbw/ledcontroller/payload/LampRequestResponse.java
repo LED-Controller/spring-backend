@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Lamp {
+public class LampRequestResponse {
 
 	private String mac; // (primary)
 	private String name;

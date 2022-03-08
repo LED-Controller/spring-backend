@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import de.dhbw.ledcontroller.payload.request.LoginRequest;
 import de.dhbw.ledcontroller.payload.request.SignupRequest;
 import de.dhbw.ledcontroller.payload.response.JwtResponse;
 import de.dhbw.ledcontroller.payload.response.MessageResponse;
+import de.dhbw.ledcontroller.payload.response.PasswordStatusResponse;
 import de.dhbw.ledcontroller.repositories.UserRepository;
 import de.dhbw.ledcontroller.security.jwt.JwtUtils;
 import de.dhbw.ledcontroller.security.services.UserDetailsImpl;
@@ -45,7 +47,7 @@ public class AuthController {
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+				new UsernamePasswordAuthenticationToken("user", loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
@@ -55,15 +57,23 @@ public class AuthController {
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername()));
 	}
 
-	@PostMapping("/signup")
+	@PostMapping("/password")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-		if (userRepository.existsByName(signUpRequest.getUsername())) {
+		if (userRepository.existsByName("user")) {
 			return ResponseEntity.badRequest()
-					.body(new MessageResponse("username is already taken", ResponseType.INFO));
+					.body(new MessageResponse("password already set", ResponseType.INFO));
 		}
 
-		User user = new User(signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()));
+		User user = new User("user", encoder.encode(signUpRequest.getPassword()));
 		userRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("user registered successfully", ResponseType.SUCCESS));
+	}
+
+	@GetMapping("/passwordstatus")
+	public ResponseEntity<?> passwordIsAlreadySet() {
+		if (userRepository.existsByName("user")) {
+			return ResponseEntity.ok(new PasswordStatusResponse(true));
+		}
+		return ResponseEntity.ok(new PasswordStatusResponse(false));
 	}
 }

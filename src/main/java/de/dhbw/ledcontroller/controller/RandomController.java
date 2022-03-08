@@ -1,52 +1,53 @@
 package de.dhbw.ledcontroller.controller;
 
-import java.util.Optional;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.dhbw.ledcontroller.connection.CommandGenerator;
-import de.dhbw.ledcontroller.connection.LightStripConnection;
+import de.dhbw.ledcontroller.models.Lamp;
+import de.dhbw.ledcontroller.payload.LightType;
+import de.dhbw.ledcontroller.payload.response.MessageResponse;
+import de.dhbw.ledcontroller.repositories.LampRepository;
+import de.dhbw.ledcontroller.util.ResponseType;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class RandomController {
+	@Autowired
+	LampRepository lampRepository;
 
-	// TODO
-	// Sollte soweit funktionieren, allerdings wird derzeit nichts mit einem Lamp-Objekt gemacht.
-	// Das Lamp-Objekt muss anhand der MAC aus der Datenbank geladen werden.
-	// Anschließend mit den Zufallswerten überschrieben werden.
-	// Dann die Daten an den Controller übertragen (über globale Methode, welche einfach das Lamp Objekt bekommt?)
-	// Zuletzt das neue Lamp Objekt zurück in die Datenbank (auch über die (selbe) globale Methode?
-	
 	@PostMapping("/random")
 	public ResponseEntity<?> random(@RequestParam String mac) {
-		int r = rand(30, 255);
-		int g = rand(30, 255);
-		int b = rand(30, 255);
+		if (lampRepository.findByMac(mac).isPresent()) {
+			Lamp lamp = lampRepository.findByMac(mac).get();
 
-		String cmd = CommandGenerator.colorRGB(r, g, b);
-		boolean success = send(mac, cmd);
-		if (success) {
-			return ResponseEntity.ok().build();
+			int r = rand(30, 255);
+			int g = rand(30, 255);
+			int b = rand(30, 255);
+			int w = rand(30, 255);
+
+			String cmd = ControllerService.getColorCmd(r, g, b, w, lamp);
+
+			boolean success = ControllerService.sendDataToController(mac, cmd);
+			if (success) {
+				if (lamp.getArt() == LightType.RGBW) {
+					lamp = ControllerService.changeColor(r, g, b, w, lamp);
+				} else {
+					lamp = ControllerService.changeColor(r, g, b, lamp);
+				}
+				lampRepository.save(lamp);
+				return ResponseEntity.ok(ControllerService.generateLampResponseFromLamp(lamp));
+			}
+			return ResponseEntity.badRequest().build();
 		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.badRequest().body(new MessageResponse("lamp not found", ResponseType.ERROR));
 	}
 
 	private int rand(int min, int max) {
 		int range = max - min + 1;
 		return (int) (Math.random() * range) + min;
 	}
-
-	// send util
-	private boolean send(String mac, String data) {
-		Optional<LightStripConnection> opt = LightStripConnection.connectionList.stream().filter(c -> c.getMac().equals(mac)).findAny();
-		if (opt.isPresent()) {
-			opt.get().sendToStrip(data);
-			return true;
-		}
-		return false;
-	}
-
 }
