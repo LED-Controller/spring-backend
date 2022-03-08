@@ -7,3 +7,4 @@ LED-Controller/.settings/org.eclipse.jdt.core.prefs
 bin/.gitignore
 /target/
 /database.db
+/session.lock
