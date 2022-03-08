@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.dhbw.ledcontroller.util.Logger;
+
 public class LightStripConnection {
 
+	private static Logger logger = new Logger();
+	
 	public static List<LightStripConnection> connectionList = Collections.synchronizedList(new ArrayList<LightStripConnection>());
 
 	private Thread dataThread;
@@ -47,7 +51,6 @@ public class LightStripConnection {
 				handleData(data);
 			} catch (IOException e) {
 				remove();
-				e.printStackTrace();
 				return;
 			}
 		}
@@ -60,11 +63,11 @@ public class LightStripConnection {
 			add();
 		}
 
-		System.out.println("FROM " + mac + " | " + data);
+		logger.log("FROM " + mac + " | " + data);
 	}
 
 	public void sendToStrip(String data) {
-		System.out.println("TO   " + mac + " | " + data);
+		logger.log("TO   " + mac + " | " + data);
 		data = data + '\n';
 		try {
 			out.writeBytes(data);
@@ -77,10 +80,12 @@ public class LightStripConnection {
 
 	private void remove() {
 		connectionList.remove(this);
+		logger.log(mac + " wurde getrennt.");
 	}
 
 	private void add() {
 		connectionList.add(this);
+		logger.log(mac + " wurde verbunden.");
 	}
 
 	public void sendPing() {

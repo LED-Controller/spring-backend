@@ -17,10 +17,10 @@ public class ConnectionManager {
 	private static Logger logger = new Logger();
 
 	private static boolean alreadyRunning = false;
-	
+
 	@EventListener(ApplicationReadyEvent.class)
 	public void startConnectionManager() {
-		if(alreadyRunning) {
+		if (alreadyRunning) {
 			logger.log("Server wurde NICHT erneut gestartet.");
 		} else {
 			alreadyRunning = true;
@@ -39,7 +39,6 @@ public class ConnectionManager {
 				try (ServerSocket serverSocket = new ServerSocket(PORT)) {
 					while (true) {
 						Socket socket = serverSocket.accept();
-						logger.log("IP " + socket.getInetAddress().getHostAddress() + " hat sich verbunden.");
 						LightStripConnection stripConnection = new LightStripConnection(socket);
 						stripConnection.startThread();
 					}
@@ -60,7 +59,7 @@ public class ConnectionManager {
 					e.printStackTrace();
 				}
 
-				logger.log("Es sind aktuell " + LightStripConnection.connectionList.size() + " Streifen verbunden.");
+				printCurrentConnections();
 
 				for (LightStripConnection connection : LightStripConnection.connectionList) {
 					connection.sendPing();
@@ -69,6 +68,17 @@ public class ConnectionManager {
 
 		});
 		pingThread.start();
+	}
+
+	private void printCurrentConnections() {
+		int size = LightStripConnection.connectionList.size();
+		if (size == 0) {
+			logger.log("Es sind aktuell keine Streifen verbunden.");
+		} else if (size == 1) {
+			logger.log("Es ist aktuell 1 Streifen verbunden.");
+		} else {
+			logger.log("Es sind aktuell " + size + " Streifen verbunden.");
+		}
 	}
 
 }
