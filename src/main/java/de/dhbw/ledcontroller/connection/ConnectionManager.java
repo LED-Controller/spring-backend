@@ -13,7 +13,7 @@ import de.dhbw.ledcontroller.util.Logger;
 @Component
 public class ConnectionManager {
 
-	private static final int PORT = 18533;
+	public static final int PORT = 18533;
 	private static Logger logger = new Logger();
 
 	private static boolean alreadyRunning = false;
