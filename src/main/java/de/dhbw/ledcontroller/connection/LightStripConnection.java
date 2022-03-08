@@ -69,7 +69,7 @@ public class LightStripConnection {
 	}
 
 	public void sendToStrip(String data) {
-		if(!data.equals("ping")) {
+		if (!data.equals("ping")) {
 			logger.log("TO   " + mac + " | " + data);
 		}
 		data = data + '\n';
