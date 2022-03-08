@@ -14,7 +14,7 @@ import de.dhbw.ledcontroller.util.Logger;
 public class LightStripConnection {
 
 	private static Logger logger = new Logger();
-	
+
 	public static List<LightStripConnection> connectionList = Collections.synchronizedList(new ArrayList<LightStripConnection>());
 
 	private Thread dataThread;
@@ -57,17 +57,21 @@ public class LightStripConnection {
 	}
 
 	private void handleData(String data) {
-		if (data.startsWith("REGISTER ")) {
+		if (data.startsWith("REG ")) {
 			String[] split = data.split(" ");
 			mac = split[1];
 			add();
 		}
 
-		logger.log("FROM " + mac + " | " + data);
+		if (!data.equals("pong")) {
+			logger.log("FROM " + mac + " | " + data);
+		}
 	}
 
 	public void sendToStrip(String data) {
-		logger.log("TO   " + mac + " | " + data);
+		if(!data.equals("ping")) {
+			logger.log("TO   " + mac + " | " + data);
+		}
 		data = data + '\n';
 		try {
 			out.writeBytes(data);
