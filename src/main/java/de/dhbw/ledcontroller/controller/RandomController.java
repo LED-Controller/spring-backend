@@ -1,10 +1,12 @@
 package de.dhbw.ledcontroller.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.dhbw.ledcontroller.models.Lamp;
@@ -20,7 +22,7 @@ public class RandomController {
 	LampRepository lampRepository;
 
 	@PostMapping("/random")
-	public ResponseEntity<?> random(@RequestParam String mac) {
+	public ResponseEntity<?> random(@Valid @RequestBody String mac) {
 		if (lampRepository.findByMac(mac).isPresent()) {
 			Lamp lamp = lampRepository.findByMac(mac).get();
 
