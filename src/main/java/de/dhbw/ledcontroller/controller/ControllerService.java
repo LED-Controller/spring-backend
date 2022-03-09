@@ -37,13 +37,13 @@ public class ControllerService {
 	}
 
 	public static LampRequestResponse generateLampResponseFromLamp(Lamp lamp) {
-		return new LampRequestResponse(lamp.getMac(), lamp.getName(), lamp.getArt(), new LedColor(lamp.getRed(), lamp.getGreen(), lamp.getBlue(), lamp.getWhite()), lamp.getBrightness(), lamp.isOn(), lamp.isOnline());
+		return new LampRequestResponse(lamp.getMac(), lamp.getName(), lamp.getType(), new LedColor(lamp.getRed(), lamp.getGreen(), lamp.getBlue(), lamp.getWhite()), lamp.getBrightness(), lamp.isOn(), lamp.isOnline());
 	}
 
 	public static Lamp editLampFromRequest(Lamp lamp, LampRequestResponse request) {
 		lamp.setMac(request.getMac());
 		lamp.setName(request.getName());
-		lamp.setArt(request.getArt());
+		lamp.setType(request.getType());
 		lamp.setRed(request.getColor().getR());
 		lamp.setGreen(request.getColor().getG());
 		lamp.setBlue(request.getColor().getB());
@@ -55,7 +55,7 @@ public class ControllerService {
 	}
 
 	public static String getColorCmd(int r, int g, int b, int w, Lamp lamp) {
-		switch (lamp.getArt()) {
+		switch (lamp.getType()) {
 		case RGB:
 			return CommandGenerator.colorRGB(r, g, b);
 		case NEOPIXEL:

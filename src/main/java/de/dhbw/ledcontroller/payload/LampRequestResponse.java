@@ -9,7 +9,7 @@ public class LampRequestResponse {
 
 	private String mac; // (primary)
 	private String name;
-	private LightType art;
+	private LightType type;
 	private LedColor color;
 	private int brightness;
 	private boolean isOn;

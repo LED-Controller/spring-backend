@@ -35,7 +35,8 @@ public class RandomController {
 
 			boolean success = ControllerService.sendDataToController(mac, cmd);
 			if (success) {
-				if (lamp.getArt() == LightType.RGBW) {
+				// Farbe geändert, Objekt jetzt noch manipulieren
+				if (lamp.getType() == LightType.RGBW) {
 					lamp = ControllerService.changeColor(r, g, b, w, lamp);
 				} else {
 					lamp = ControllerService.changeColor(r, g, b, lamp);

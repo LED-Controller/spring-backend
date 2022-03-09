@@ -28,7 +28,7 @@ public class Lamp {
 
 	@NonNull
 	@Enumerated(EnumType.STRING)
-	private LightType art;
+	private LightType type;
 
 	@NonNull
 	@Column(columnDefinition = "INTEGER")
