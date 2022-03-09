@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class TerminalHandler {
 
 	private boolean running = true;
-	
+
 	@EventListener(ApplicationReadyEvent.class)
 	public void startConnectionManager() {
 		new Thread(() -> {

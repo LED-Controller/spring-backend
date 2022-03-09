@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 public class CommandGenerator {
 
 	private static final String OFF = "OFF";
+	private static final String TEST = "OFF";
 	private static final String R_G_B = "{r} {g} {b}";
 	private static final String R_G_B_W = R_G_B + " {w}";
 
@@ -15,6 +16,10 @@ public class CommandGenerator {
 
 	public String off() {
 		return OFF;
+	}
+	
+	public String test() {
+		return TEST;
 	}
 
 	public String colorRGB(int r, int g, int b) {

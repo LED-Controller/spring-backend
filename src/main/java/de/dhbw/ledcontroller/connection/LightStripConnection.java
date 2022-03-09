@@ -66,6 +66,10 @@ public class LightStripConnection {
 		if (!data.equals("pong")) {
 			logger.log("FROM " + mac + " | " + data);
 		}
+
+		if (data.startsWith("REG ")) {
+			sendToStrip("welcome");
+		}
 	}
 
 	public void sendToStrip(String data) {
@@ -88,6 +92,10 @@ public class LightStripConnection {
 	}
 
 	private void add() {
+		connectionList.stream().filter(s -> s.getMac().equals(this.mac)).forEach(s -> {
+			s.remove();
+		});
+
 		connectionList.add(this);
 		logger.log(mac + " wurde verbunden.");
 	}
