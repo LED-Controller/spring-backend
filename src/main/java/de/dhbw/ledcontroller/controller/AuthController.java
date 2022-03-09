@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.dhbw.ledcontroller.models.User;
-import de.dhbw.ledcontroller.payload.request.LoginRequest;
-import de.dhbw.ledcontroller.payload.request.SignupRequest;
+import de.dhbw.ledcontroller.payload.request.LoginSignupRequest;
 import de.dhbw.ledcontroller.payload.response.JwtResponse;
 import de.dhbw.ledcontroller.payload.response.MessageResponse;
 import de.dhbw.ledcontroller.payload.response.PasswordStatusResponse;
@@ -44,9 +43,10 @@ public class AuthController {
 	JwtUtils jwtUtils;
 
 	@PostMapping("")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginSignupRequest loginRequest) {
 
-		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("user", loginRequest.getPassword()));
+		Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken("user", loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
@@ -57,14 +57,14 @@ public class AuthController {
 	}
 
 	@PostMapping("/password")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody LoginSignupRequest signUpRequest) {
 		if (userRepository.existsByName("user")) {
 			return ResponseEntity.badRequest().body(new MessageResponse("password already set", ResponseType.INFO));
 		}
 
 		User user = new User("user", encoder.encode(signUpRequest.getPassword()));
 		userRepository.save(user);
-		return ResponseEntity.ok(new MessageResponse("user registered successfully", ResponseType.SUCCESS));
+		return authenticateUser(signUpRequest);
 	}
 
 	@GetMapping("/passwordstatus")
