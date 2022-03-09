@@ -18,16 +18,16 @@ import de.dhbw.ledcontroller.util.ResponseType;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class RegisterDeviceController {
-    @Autowired
-    LampRepository lampRepository;
+	@Autowired
+	LampRepository lampRepository;
 
-    @PostMapping("/register")
-    public ResponseEntity<?> updateLamp(@Valid @RequestBody LampRequestResponse request) {
-        if (!lampRepository.findByMac(request.getMac()).isPresent()) {
-            Lamp lamp = ControllerService.editLampFromRequest(new Lamp(), request);
-            lampRepository.save(lamp);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().body(new MessageResponse("lamp already registered", ResponseType.ERROR));
-    }
+	@PostMapping("/register")
+	public ResponseEntity<?> updateLamp(@Valid @RequestBody LampRequestResponse request) {
+		if (!lampRepository.findByMac(request.getMac()).isPresent()) {
+			Lamp lamp = ControllerService.editLampFromRequest(new Lamp(), request);
+			lampRepository.save(lamp);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.badRequest().body(new MessageResponse("lamp already registered", ResponseType.ERROR));
+	}
 }

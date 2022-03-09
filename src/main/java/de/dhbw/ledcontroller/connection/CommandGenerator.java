@@ -17,7 +17,7 @@ public class CommandGenerator {
 	public String off() {
 		return OFF;
 	}
-	
+
 	public String test() {
 		return TEST;
 	}

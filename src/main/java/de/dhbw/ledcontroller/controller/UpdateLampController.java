@@ -19,28 +19,27 @@ import de.dhbw.ledcontroller.util.ResponseType;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class UpdateLampController {
-    @Autowired
-    LampRepository lampRepository;
+	@Autowired
+	LampRepository lampRepository;
 
-    @PostMapping("/update")
-    public ResponseEntity<?> updateLamp(@Valid @RequestBody LampRequestResponse request) {
-        if (lampRepository.findByMac(request.getMac()).isPresent()) {
-            Lamp lamp = lampRepository.findByMac(request.getMac()).get();
+	@PostMapping("/update")
+	public ResponseEntity<?> updateLamp(@Valid @RequestBody LampRequestResponse request) {
+		if (lampRepository.findByMac(request.getMac()).isPresent()) {
+			Lamp lamp = lampRepository.findByMac(request.getMac()).get();
 
-            String cmd = ControllerService.getColorCmd(request.getColor().getR(),
-                    request.getColor().getG(), request.getColor().getB(), request.getColor().getW(), lamp);
+			String cmd = ControllerService.getColorCmd(request.getColor().getR(), request.getColor().getG(), request.getColor().getB(), request.getColor().getW(), lamp);
 
-            boolean successColor = ControllerService.sendDataToController(request.getMac(), cmd);
-            boolean successOnstate = true;
-            if (!request.isOn())
-                successOnstate = ControllerService.sendDataToController(request.getMac(), CommandGenerator.off());
-            if (successColor && successOnstate) {
-                lamp = ControllerService.editLampFromRequest(lamp, request);
-                lampRepository.save(lamp);
-                return ResponseEntity.ok().build();
-            }
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.badRequest().body(new MessageResponse("lamp not found", ResponseType.ERROR));
-    }
+			boolean successColor = ControllerService.sendDataToController(request.getMac(), cmd);
+			boolean successOnstate = true;
+			if (!request.isOn())
+				successOnstate = ControllerService.sendDataToController(request.getMac(), CommandGenerator.off());
+			if (successColor && successOnstate) {
+				lamp = ControllerService.editLampFromRequest(lamp, request);
+				lampRepository.save(lamp);
+				return ResponseEntity.ok().build();
+			}
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.badRequest().body(new MessageResponse("lamp not found", ResponseType.ERROR));
+	}
 }

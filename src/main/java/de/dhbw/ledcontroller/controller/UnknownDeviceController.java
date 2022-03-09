@@ -15,18 +15,18 @@ import de.dhbw.ledcontroller.repositories.LampRepository;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class UnknownDeviceController {
-    @Autowired
-    LampRepository lampRepository;
+	@Autowired
+	LampRepository lampRepository;
 
-    @GetMapping("/unknown")
-    public ResponseEntity<?> getUnknownDevices() {
-        List<String> unknownMacs = new ArrayList<>();
-        for (LightStripConnection connection : LightStripConnection.connectionList) {
-            if (!lampRepository.findByMac(connection.getMac()).isPresent()) {
-                unknownMacs.add(connection.getMac());
-            }
-        }
-        return ResponseEntity.ok(unknownMacs);
+	@GetMapping("/unknown")
+	public ResponseEntity<?> getUnknownDevices() {
+		List<String> unknownMacs = new ArrayList<>();
+		for (LightStripConnection connection : LightStripConnection.connectionList) {
+			if (!lampRepository.findByMac(connection.getMac()).isPresent()) {
+				unknownMacs.add(connection.getMac());
+			}
+		}
+		return ResponseEntity.ok(unknownMacs);
 
-    }
+	}
 }

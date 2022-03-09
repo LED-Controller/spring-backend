@@ -17,19 +17,19 @@ import de.dhbw.ledcontroller.util.ResponseType;
 @RestController
 @RequestMapping("/lamps")
 public class LampController {
-    @Autowired
-    LampRepository lampRepository;
+	@Autowired
+	LampRepository lampRepository;
 
-    @GetMapping("")
-    public ResponseEntity<?> getAllLamps() {
-        return ResponseEntity.ok(new LampListResponse(lampRepository.findAllByOrderByNameAsc()));
-    }
+	@GetMapping("")
+	public ResponseEntity<?> getAllLamps() {
+		return ResponseEntity.ok(new LampListResponse(lampRepository.findAllByOrderByNameAsc()));
+	}
 
-    @GetMapping("/{mac}")
-    public ResponseEntity<?> getLamp(@PathVariable String mac) {
-        if (lampRepository.findByMac(mac).isPresent()) {
-            return ResponseEntity.ok(lampRepository.findByMac(mac));
-        }
-        return ResponseEntity.badRequest().body(new MessageResponse("lamp not found", ResponseType.ERROR));
-    }
+	@GetMapping("/{mac}")
+	public ResponseEntity<?> getLamp(@PathVariable String mac) {
+		if (lampRepository.findByMac(mac).isPresent()) {
+			return ResponseEntity.ok(lampRepository.findByMac(mac));
+		}
+		return ResponseEntity.badRequest().body(new MessageResponse("lamp not found", ResponseType.ERROR));
+	}
 }

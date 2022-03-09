@@ -18,43 +18,43 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Entity
 public class Lamp {
-    @Id
-    @Column(columnDefinition = "TEXT")
-    private String mac;
+	@Id
+	@Column(columnDefinition = "TEXT")
+	private String mac;
 
-    @NonNull
-    @Column(columnDefinition = "TEXT")
-    private String name;
+	@NonNull
+	@Column(columnDefinition = "TEXT")
+	private String name;
 
-    @NonNull
-    @Enumerated(EnumType.STRING)
-    private LightType art;
+	@NonNull
+	@Enumerated(EnumType.STRING)
+	private LightType art;
 
-    @NonNull
-    @Column(columnDefinition = "INTEGER")
-    private int red;
+	@NonNull
+	@Column(columnDefinition = "INTEGER")
+	private int red;
 
-    @NonNull
-    @Column(columnDefinition = "INTEGER")
-    private int green;
+	@NonNull
+	@Column(columnDefinition = "INTEGER")
+	private int green;
 
-    @NonNull
-    @Column(columnDefinition = "INTEGER")
-    private int blue;
+	@NonNull
+	@Column(columnDefinition = "INTEGER")
+	private int blue;
 
-    @NonNull
-    @Column(columnDefinition = "INTEGER")
-    private int white;
+	@NonNull
+	@Column(columnDefinition = "INTEGER")
+	private int white;
 
-    @NonNull
-    @Column(columnDefinition = "INTEGER")
-    private int brightness;
+	@NonNull
+	@Column(columnDefinition = "INTEGER")
+	private int brightness;
 
-    @NonNull
-    @Column(columnDefinition = "BOOLEAN")
-    private boolean isOn;
+	@NonNull
+	@Column(columnDefinition = "BOOLEAN")
+	private boolean isOn;
 
-    @NonNull
-    @Column(columnDefinition = "BOOLEAN")
-    private boolean isOnline;
+	@NonNull
+	@Column(columnDefinition = "BOOLEAN")
+	private boolean isOnline;
 }

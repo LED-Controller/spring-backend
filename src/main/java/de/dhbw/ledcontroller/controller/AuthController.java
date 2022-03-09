@@ -46,8 +46,7 @@ public class AuthController {
 	@PostMapping("")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken("user", loginRequest.getPassword()));
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("user", loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
@@ -60,8 +59,7 @@ public class AuthController {
 	@PostMapping("/password")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (userRepository.existsByName("user")) {
-			return ResponseEntity.badRequest()
-					.body(new MessageResponse("password already set", ResponseType.INFO));
+			return ResponseEntity.badRequest().body(new MessageResponse("password already set", ResponseType.INFO));
 		}
 
 		User user = new User("user", encoder.encode(signUpRequest.getPassword()));

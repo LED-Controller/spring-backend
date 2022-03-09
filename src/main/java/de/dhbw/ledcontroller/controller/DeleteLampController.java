@@ -15,16 +15,16 @@ import de.dhbw.ledcontroller.util.ResponseType;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class DeleteLampController {
-    @Autowired
-    LampRepository lampRepository;
+	@Autowired
+	LampRepository lampRepository;
 
-    @DeleteMapping("/delete/{mac}")
-    public ResponseEntity<?> deleteLamp(@PathVariable String mac) {
-        if (lampRepository.findByMac(mac).isPresent()) {
-            Lamp lamp = lampRepository.findByMac(mac).get();
-            lampRepository.delete(lamp);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().body(new MessageResponse("lamp not found", ResponseType.ERROR));
-    }
+	@DeleteMapping("/delete/{mac}")
+	public ResponseEntity<?> deleteLamp(@PathVariable String mac) {
+		if (lampRepository.findByMac(mac).isPresent()) {
+			Lamp lamp = lampRepository.findByMac(mac).get();
+			lampRepository.delete(lamp);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.badRequest().body(new MessageResponse("lamp not found", ResponseType.ERROR));
+	}
 }
