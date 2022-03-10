@@ -53,7 +53,12 @@ public class FakeControllerClient {
 					}
 				}
 				System.out.println("CLIENT " + mac + "  IN: " + res);
-				send("OK");
+				
+				if(res.equals("ping")) {
+					send("pong");
+				} else {
+					send("ok");
+				}
 			}
 		});
 		t.start();
