@@ -88,13 +88,20 @@ public class LightStripConnection {
 
 	private void remove() {
 		connectionList.remove(this);
+		if (dataThread != null && dataThread.isAlive()) {
+			dataThread.interrupt();
+		}
 		logger.log(mac + " wurde getrennt.");
 	}
 
 	private void add() {
-		connectionList.stream().filter(s -> s.getMac().equals(this.mac)).forEach(s -> {
-			s.remove();
-		});
+		for (LightStripConnection c : connectionList) {
+			if (c.getMac().equals(this.mac)) {
+				logger.log(mac + " ist erneut verbunden?");
+				connectionList.remove(c);
+				break;
+			}
+		}
 
 		connectionList.add(this);
 		logger.log(mac + " wurde verbunden.");
