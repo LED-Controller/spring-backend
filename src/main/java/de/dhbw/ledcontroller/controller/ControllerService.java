@@ -53,7 +53,7 @@ public class ControllerService {
 		case NEOPIXEL:
 			return CommandGenerator.colorNeoRGB(rgb);
 		case RGBW:
-			return CommandGenerator.colorRGBW(ColorController.convert(rgb));
+			return CommandGenerator.colorRGBW(ColorController.convertRGBToRGBW(rgb));
 		}
 		return null;
 	}

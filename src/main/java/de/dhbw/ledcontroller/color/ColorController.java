@@ -1,5 +1,7 @@
 package de.dhbw.ledcontroller.color;
 
+import java.awt.Color;
+
 import de.dhbw.ledcontroller.payload.LedColorRGB;
 import de.dhbw.ledcontroller.payload.LedColorRGBW;
 import lombok.experimental.UtilityClass;
@@ -7,7 +9,22 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ColorController {
 
-	public LedColorRGBW convert(LedColorRGB rgb) {
+	public LedColorRGB adjustBrightness(LedColorRGB rgb, int percent) {
+		if (percent < 0 || percent > 100) {
+			throw new RuntimeException("percent not in range");
+		}
+
+		float[] hsv = new float[3];
+		Color.RGBtoHSB(rgb.getR(), rgb.getG(), rgb.getB(), hsv);
+
+		float newBrightness = 0.01f * percent;
+		hsv[2] = newBrightness;
+
+		Color color = new Color(Color.HSBtoRGB(hsv[0], hsv[1], hsv[2]));
+		return new LedColorRGB(color.getRed(), color.getGreen(), color.getBlue());
+	}
+
+	public LedColorRGBW convertRGBToRGBW(LedColorRGB rgb) {
 		int Ri = rgb.getR();
 		int Gi = rgb.getG();
 		int Bi = rgb.getB();
@@ -51,12 +68,4 @@ public class ColorController {
 		return new LedColorRGBW(Ro, Go, Bo, Wo);
 	}
 
-	public static void main(String args[]) {
-		LedColorRGB input = new LedColorRGB(40, 20, 10);
-		LedColorRGBW output = convert(input);
-		
-		System.out.println("R:" + output.getR() + " G:" + output.getG() + " B:" + output.getB() + " W:" + output.getW());
-		// R:30 G:10 B:0 W:10
-	}
-	
 }
