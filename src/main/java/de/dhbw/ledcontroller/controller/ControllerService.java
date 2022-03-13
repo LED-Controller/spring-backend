@@ -28,16 +28,8 @@ public class ControllerService {
 		return lamp;
 	}
 
-	public static Lamp changeColor(int r, int g, int b, int w, Lamp lamp) {
-		lamp.setRed(r);
-		lamp.setGreen(g);
-		lamp.setBlue(b);
-		lamp.setWhite(w);
-		return lamp;
-	}
-
 	public static LampRequestResponse generateLampResponseFromLamp(Lamp lamp) {
-		return new LampRequestResponse(lamp.getMac(), lamp.getName(), lamp.getType(), new LedColor(lamp.getRed(), lamp.getGreen(), lamp.getBlue(), lamp.getWhite()), lamp.getBrightness(), lamp.isOn(), lamp.isOnline());
+		return new LampRequestResponse(lamp.getMac(), lamp.getName(), lamp.getType(), new LedColor(lamp.getRed(), lamp.getGreen(), lamp.getBlue()), lamp.getBrightness(), lamp.isOn(), lamp.isOnline());
 	}
 
 	public static Lamp editLampFromRequest(Lamp lamp, LampRequestResponse request) {
@@ -47,21 +39,20 @@ public class ControllerService {
 		lamp.setRed(request.getColor().getR());
 		lamp.setGreen(request.getColor().getG());
 		lamp.setBlue(request.getColor().getB());
-		lamp.setWhite(request.getColor().getW());
 		lamp.setBrightness(request.getBrightness());
 		lamp.setOn(request.isOn());
 		lamp.setOnline(request.isOnline());
 		return lamp;
 	}
 
-	public static String getColorCmd(int r, int g, int b, int w, Lamp lamp) {
+	public static String getColorCmd(int r, int g, int b, Lamp lamp) {
 		switch (lamp.getType()) {
 		case RGB:
 			return CommandGenerator.colorRGB(r, g, b);
 		case NEOPIXEL:
 			return CommandGenerator.colorNeoRGB(r, g, b);
 		case RGBW:
-			return CommandGenerator.colorRGBW(r, g, b, w);
+			return CommandGenerator.colorRGBW(r, g, b, -1); //TODO convert
 		default:
 			return CommandGenerator.colorRGB(255, 255, 255);
 		}

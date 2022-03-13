@@ -27,7 +27,7 @@ public class UpdateLampController {
 		if (lampRepository.findByMac(request.getMac()).isPresent()) {
 			Lamp lamp = lampRepository.findByMac(request.getMac()).get();
 
-			String cmd = ControllerService.getColorCmd(request.getColor().getR(), request.getColor().getG(), request.getColor().getB(), request.getColor().getW(), lamp);
+			String cmd = ControllerService.getColorCmd(request.getColor().getR(), request.getColor().getG(), request.getColor().getB(), lamp);
 
 			boolean successColor = ControllerService.sendDataToController(request.getMac(), cmd);
 			boolean successOnstate = true;

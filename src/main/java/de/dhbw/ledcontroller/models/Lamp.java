@@ -44,10 +44,6 @@ public class Lamp {
 
 	@NonNull
 	@Column(columnDefinition = "INTEGER")
-	private int white;
-
-	@NonNull
-	@Column(columnDefinition = "INTEGER")
 	private int brightness;
 
 	@NonNull
