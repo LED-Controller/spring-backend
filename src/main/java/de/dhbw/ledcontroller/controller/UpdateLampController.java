@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.dhbw.ledcontroller.color.ColorController;
 import de.dhbw.ledcontroller.connection.CommandGenerator;
 import de.dhbw.ledcontroller.models.Lamp;
 import de.dhbw.ledcontroller.payload.LampRequestResponse;
+import de.dhbw.ledcontroller.payload.LedColorRGB;
 import de.dhbw.ledcontroller.payload.response.MessageResponse;
 import de.dhbw.ledcontroller.repositories.LampRepository;
 import de.dhbw.ledcontroller.util.ResponseType;
@@ -24,6 +26,8 @@ public class UpdateLampController {
 
 	@PostMapping("/update")
 	public ResponseEntity<?> updateLamp(@Valid @RequestBody LampRequestResponse request) {
+		correctRequest(request);
+		
 		if (lampRepository.findByMac(request.getMac()).isPresent()) {
 			Lamp lamp = lampRepository.findByMac(request.getMac()).get();
 
@@ -41,5 +45,11 @@ public class UpdateLampController {
 			return ResponseEntity.badRequest().build();
 		}
 		return ResponseEntity.badRequest().body(new MessageResponse("lamp not found", ResponseType.ERROR));
+	}
+
+	private void correctRequest(LampRequestResponse request) {
+		LedColorRGB rgb = request.getColor();
+		LedColorRGB adjustBrightness = ColorController.adjustBrightness(rgb, request.getBrightness());
+		request.setColor(adjustBrightness);
 	}
 }
