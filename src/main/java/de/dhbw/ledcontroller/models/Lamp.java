@@ -50,7 +50,4 @@ public class Lamp {
 	@Column(columnDefinition = "BOOLEAN")
 	private boolean isOn;
 
-	@NonNull
-	@Column(columnDefinition = "BOOLEAN")
-	private boolean isOnline;
 }

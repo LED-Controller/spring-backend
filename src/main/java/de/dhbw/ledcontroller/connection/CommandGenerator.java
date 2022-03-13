@@ -1,5 +1,7 @@
 package de.dhbw.ledcontroller.connection;
 
+import de.dhbw.ledcontroller.payload.LedColorRGB;
+import de.dhbw.ledcontroller.payload.LedColorRGBW;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -22,16 +24,16 @@ public class CommandGenerator {
 		return TEST;
 	}
 
-	public String colorRGB(int r, int g, int b) {
-		return replace(replace(replace(NORMAL_FILL, 'r', r), 'g', g), 'b', b);
+	public String colorRGB(LedColorRGB rgb) {
+		return replace(replace(replace(NORMAL_FILL, 'r', rgb.getR()), 'g', rgb.getG()), 'b', rgb.getB());
 	}
 
-	public String colorRGBW(int r, int g, int b, int w) {
-		return replace(replace(replace(replace(NORMAL_FILL_W, 'r', r), 'g', g), 'b', b), 'w', w);
+	public String colorRGBW(LedColorRGBW rgbw) {
+		return replace(replace(replace(replace(NORMAL_FILL_W, 'r', rgbw.getR()), 'g', rgbw.getG()), 'b', rgbw.getB()), 'w', rgbw.getW());
 	}
 
-	public String colorNeoRGB(int r, int g, int b) {
-		return replace(replace(replace(NEO_FILL, 'r', r), 'g', g), 'b', b);
+	public String colorNeoRGB(LedColorRGB rgb) {
+		return replace(replace(replace(NEO_FILL, 'r', rgb.getR()), 'g', rgb.getG()), 'b', rgb.getB());
 	}
 
 	// util

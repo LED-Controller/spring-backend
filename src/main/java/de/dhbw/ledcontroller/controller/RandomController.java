@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.dhbw.ledcontroller.models.Lamp;
+import de.dhbw.ledcontroller.payload.LedColorRGB;
 import de.dhbw.ledcontroller.payload.response.MessageResponse;
 import de.dhbw.ledcontroller.repositories.LampRepository;
 import de.dhbw.ledcontroller.util.ResponseType;
@@ -25,15 +26,12 @@ public class RandomController {
 		if (lampRepository.findByMac(mac).isPresent()) {
 			Lamp lamp = lampRepository.findByMac(mac).get();
 
-			int r = rand(30, 255);
-			int g = rand(30, 255);
-			int b = rand(30, 255);
-
-			String cmd = ControllerService.getColorCmd(r, g, b, lamp);
+			LedColorRGB rgb = new LedColorRGB(rand(30, 255), rand(30, 255), rand(30, 255));
+			String cmd = ControllerService.getColorCmd(rgb, lamp);
 
 			boolean success = ControllerService.sendDataToController(mac, cmd);
 			if (success) {
-				lamp = ControllerService.changeColor(r, g, b, lamp);
+				lamp = ControllerService.changeColor(rgb, lamp);
 				lampRepository.save(lamp);
 				return ResponseEntity.ok(ControllerService.generateLampResponseFromLamp(lamp));
 			}

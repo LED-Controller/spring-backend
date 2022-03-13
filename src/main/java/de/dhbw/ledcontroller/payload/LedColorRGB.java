@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LedColor {
+public class LedColorRGB {
 	
 	int r = -1;
 	int g = -1;
