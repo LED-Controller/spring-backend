@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.dhbw.ledcontroller.color.ColorController;
 import de.dhbw.ledcontroller.models.Lamp;
 import de.dhbw.ledcontroller.payload.LedColorRGB;
 import de.dhbw.ledcontroller.payload.response.MessageResponse;
@@ -27,11 +28,14 @@ public class RandomController {
 			Lamp lamp = lampRepository.findByMac(mac).get();
 
 			LedColorRGB rgb = new LedColorRGB(rand(30, 255), rand(30, 255), rand(30, 255));
+			rgb = ColorController.adjustBrightness(rgb, 100);
+			
 			String cmd = ControllerService.getColorCmd(rgb, lamp);
 
 			boolean success = ControllerService.sendDataToController(mac, cmd);
 			if (success) {
 				lamp = ControllerService.changeColor(rgb, lamp);
+				lamp.setBrightness(100);
 				lampRepository.save(lamp);
 				return ResponseEntity.ok(ControllerService.generateLampResponseFromLamp(lamp));
 			}
