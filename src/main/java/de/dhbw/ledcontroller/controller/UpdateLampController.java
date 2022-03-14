@@ -33,11 +33,15 @@ public class UpdateLampController {
 
 			String cmd = ControllerService.getColorCmd(request.getColor(), lamp);
 
-			boolean successColor = ControllerService.sendDataToController(request.getMac(), cmd);
-			boolean successOnstate = true;
+			boolean successColor = true;
+			if(request.isOn()) {
+				successColor = ControllerService.sendDataToController(request.getMac(), cmd);
+			}
+			
+			boolean successOnState = true;
 			if (!request.isOn())
-				successOnstate = ControllerService.sendDataToController(request.getMac(), CommandGenerator.off());
-			if (successColor && successOnstate) {
+				successOnState = ControllerService.sendDataToController(request.getMac(), CommandGenerator.off());
+			if (successColor && successOnState) {
 				lamp = ControllerService.editLampFromRequest(lamp, request);
 				lampRepository.save(lamp);
 				return ResponseEntity.ok().build();
