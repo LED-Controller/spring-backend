@@ -36,6 +36,7 @@ public class RandomController {
 			if (success) {
 				lamp = ControllerService.changeColor(rgb, lamp);
 				lamp.setBrightness(100);
+				lamp.setOn(true);
 				lampRepository.save(lamp);
 				return ResponseEntity.ok(ControllerService.generateLampResponseFromLamp(lamp));
 			}
