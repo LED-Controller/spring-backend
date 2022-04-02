@@ -11,12 +11,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import de.dhbw.ledcontroller.controller.ControllerService;
+import de.dhbw.ledcontroller.controller.LampController;
 import de.dhbw.ledcontroller.models.Lamp;
 import de.dhbw.ledcontroller.payload.LedColorRGB;
 import de.dhbw.ledcontroller.repositories.LampRepository;
 import de.dhbw.ledcontroller.util.Logger;
+import lombok.NoArgsConstructor;
 
 public class LightStripConnection {
 
@@ -29,7 +32,7 @@ public class LightStripConnection {
 	private BufferedReader in;
 
 	private String mac;
-
+	
 	public LightStripConnection(Socket socketConnection) {
 		try {
 			in = new BufferedReader(new InputStreamReader(socketConnection.getInputStream()));
@@ -101,9 +104,6 @@ public class LightStripConnection {
 		logger.log(mac + " wurde getrennt.");
 	}
 
-	@Autowired
-	LampRepository lampRepository;
-
 	private void add() {
 		for (LightStripConnection c : connectionList) {
 			if (c.getMac().equals(this.mac)) {
@@ -115,8 +115,8 @@ public class LightStripConnection {
 
 		connectionList.add(this);
 		logger.log(mac + " wurde verbunden.");
-
-		Optional<Lamp> optional = lampRepository.findByMac(mac);
+		
+		Optional<Lamp> optional = LampController.getStaticLampController().findByMac(mac);
 		if (optional.isPresent()) {
 			Lamp lamp = optional.get();
 			if (lamp.isOn()) {

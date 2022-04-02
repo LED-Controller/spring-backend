@@ -3,6 +3,8 @@ package de.dhbw.ledcontroller.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,11 +18,21 @@ import de.dhbw.ledcontroller.payload.LampRequestResponse;
 import de.dhbw.ledcontroller.payload.response.MessageResponse;
 import de.dhbw.ledcontroller.repositories.LampRepository;
 import de.dhbw.ledcontroller.util.ResponseType;
+import lombok.Getter;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/lamps")
 public class LampController {
+
+	@Getter
+	private static LampRepository staticLampController;
+
+	@PostConstruct
+	public void test() {
+		staticLampController = lampRepository;
+	}
+
 	@Autowired
 	LampRepository lampRepository;
 
@@ -36,8 +48,7 @@ public class LampController {
 	@GetMapping("/{mac}")
 	public ResponseEntity<?> getLamp(@PathVariable String mac) {
 		if (lampRepository.findByMac(mac).isPresent()) {
-			return ResponseEntity
-					.ok(ControllerService.generateLampResponseFromLamp(lampRepository.findByMac(mac).get()));
+			return ResponseEntity.ok(ControllerService.generateLampResponseFromLamp(lampRepository.findByMac(mac).get()));
 		}
 		return ResponseEntity.badRequest().body(new MessageResponse("lamp not found", ResponseType.ERROR));
 	}
