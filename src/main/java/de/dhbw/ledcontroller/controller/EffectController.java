@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.dhbw.ledcontroller.connection.CommandGenerator;
+import de.dhbw.ledcontroller.payload.request.EffectRequest;
 import de.dhbw.ledcontroller.payload.response.MessageResponse;
 import de.dhbw.ledcontroller.repositories.LampRepository;
 import de.dhbw.ledcontroller.util.ResponseType;
@@ -21,10 +22,10 @@ public class EffectController {
 	LampRepository lampRepository;
 
 	@PostMapping("/effect")
-	public ResponseEntity<?> random(@Valid @RequestBody String mac, @Valid @RequestBody String effectName) {
-		if (lampRepository.findByMac(mac).isPresent()) {
-			String cmd = CommandGenerator.effect(effectName);
-			boolean success = ControllerService.sendDataToController(mac, cmd);
+	public ResponseEntity<?> random(@Valid @RequestBody EffectRequest request) {
+		if (lampRepository.findByMac(request.getMac()).isPresent()) {
+			String cmd = CommandGenerator.effect(request.getEffectType().name());
+			boolean success = ControllerService.sendDataToController(request.getMac(), cmd);
 			if (success) {
 				return ResponseEntity.ok().body(new MessageResponse("effect activated", ResponseType.SUCCESS));
 			}
