@@ -1,6 +1,7 @@
 package de.dhbw.ledcontroller.connection;
 
 import java.io.IOException;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 

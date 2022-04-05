@@ -15,6 +15,8 @@ public class CommandGenerator {
 	private static final String NORMAL_FILL = "F1 " + R_G_B;
 	private static final String NORMAL_FILL_W = "F2 " + R_G_B_W;
 	private static final String NEO_FILL = "X1 " + R_G_B;
+	
+	private static final String EFFECT = "EFFECT";
 
 	public String off() {
 		return OFF;
@@ -22,6 +24,10 @@ public class CommandGenerator {
 
 	public String test() {
 		return TEST;
+	}
+	
+	public String effect(String effectName) {
+		return EFFECT + " " + effectName;
 	}
 
 	public String colorRGB(LedColorRGB rgb) {
