@@ -21,7 +21,7 @@ public class BlinkController {
 	LampRepository lampRepository;
 
 	@PostMapping("/blink")
-	public ResponseEntity<?> random(@Valid @RequestBody String mac) {
+	public ResponseEntity<?> blink(@Valid @RequestBody String mac) {
 		boolean success = ControllerService.sendDataToController(mac, CommandGenerator.test());
 		if (success) {
 			return ResponseEntity.ok().build();

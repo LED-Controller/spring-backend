@@ -22,7 +22,7 @@ public class RegisterDeviceController {
 	LampRepository lampRepository;
 
 	@PostMapping("/register")
-	public ResponseEntity<?> updateLamp(@Valid @RequestBody LampRequestResponse request) {
+	public ResponseEntity<?> registerLamp(@Valid @RequestBody LampRequestResponse request) {
 		if (!lampRepository.findByMac(request.getMac()).isPresent()) {
 			Lamp lamp = ControllerService.editLampFromRequest(new Lamp(), request);
 			lampRepository.save(lamp);

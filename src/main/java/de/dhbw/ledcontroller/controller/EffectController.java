@@ -22,7 +22,7 @@ public class EffectController {
 	LampRepository lampRepository;
 
 	@PostMapping("/effect")
-	public ResponseEntity<?> random(@Valid @RequestBody EffectRequest request) {
+	public ResponseEntity<?> setEffect(@Valid @RequestBody EffectRequest request) {
 		if (lampRepository.findByMac(request.getMac()).isPresent()) {
 			String cmd = CommandGenerator.effect(request.getEffectType().name());
 			boolean success = ControllerService.sendDataToController(request.getMac(), cmd);
