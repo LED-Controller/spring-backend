@@ -2,6 +2,6 @@ package de.dhbw.ledcontroller.payload;
 
 public enum EffectType {
 
-	NORMAL_PARTY;
+	NORMAL_PARTY, RAINBOW;
 
 }
