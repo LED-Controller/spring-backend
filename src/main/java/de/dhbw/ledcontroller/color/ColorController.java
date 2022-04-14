@@ -2,6 +2,7 @@ package de.dhbw.ledcontroller.color;
 
 import java.awt.Color;
 
+import de.dhbw.ledcontroller.payload.LampRequestResponse;
 import de.dhbw.ledcontroller.payload.LedColorRGB;
 import de.dhbw.ledcontroller.payload.LedColorRGBW;
 import lombok.experimental.UtilityClass;
@@ -9,6 +10,12 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ColorController {
 
+	public void correctRequest(LampRequestResponse request) {
+		LedColorRGB rgb = request.getColor();
+		LedColorRGB adjustBrightness = ColorController.adjustBrightness(rgb, request.getBrightness());
+		request.setColor(adjustBrightness);
+	}
+	
 	public LedColorRGB adjustBrightness(LedColorRGB rgb, int percent) {
 		if (percent < 0 || percent > 100) {
 			throw new RuntimeException("percent not in range");
